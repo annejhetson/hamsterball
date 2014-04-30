@@ -10,22 +10,31 @@
 <body>
   <div class="container">
     <script type="text/x-handlebars">
-      <h2>Welcome to Hamsterball</h2>
+      <h2>{{#link-to "teams"}}Welcome to Hamsterball{{/link-to}}</h2>
       <HR>
-
-      {{outlet}}
-
+        {{outlet}}
     </script>
 
     <script type="text/x-handlebars" id="teams">
       <div class="col-md-3">
-        {{#each controller}}
-          <p><button class="btn btn-info">{{name}}</button></p>
+      <h3>Teams:</h3><br>
+        {{#each team in controller}}
+          <p>{{#link-to 'team' team class="btn btn-info"}}{{team.name}}{{/link-to}}</p>
         {{/each}}
         <hr>
         {{#link-to 'newteam' class="btn btn-warning" }}Add Team{{/link-to}}
-        {{outlet}}
+        <br><br>
+        {{outlet newteam}}
       </div>
+      <div class="col-md-3">
+        {{outlet team}}
+      </div>
+
+    </script>
+
+    <script type="text/x-handlebars" id="team">
+      <h3>{{name}} Players:</h3>
+
     </script>
 
 

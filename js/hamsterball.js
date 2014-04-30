@@ -11,6 +11,7 @@ Hamsterball.ApplicationAdapter = DS.LSAdapter.extend({
 // ------ROUTER-----------------------
 Hamsterball.Router.map(function() {
   this.resource('teams', { path: '/' }, function() {
+    this.resource('team', { path: '/team/:name'});
     this.resource('newteam', { path: 'team/new' });
   });
 });
@@ -23,8 +24,27 @@ Hamsterball.TeamsRoute = Ember.Route.extend({
   }
 });
 
+Hamsterball.TeamRoute = Ember.Route.extend({
+  renderTemplate: function() {
+    this.render({ outlet: 'team' });
+  },
+  model: function(params) {
+    var team = this.get('store').find('team', params.id);
+    return team;
+  }
+});
+
+Hamsterball.NewteamRoute = Ember.Route.extend({
+  renderTemplate: function() {
+    this.render({ outlet: 'newteam' });
+  }
+});
+
+
 //---------CONTROLLER-------------------
 Hamsterball.NewteamController = Ember.ObjectController.extend({
+
+
   actions :{
     save : function(){
       var name = $('#name').val();
