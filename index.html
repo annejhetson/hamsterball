@@ -11,8 +11,8 @@
   <div class="container">
     <script type="text/x-handlebars">
       <h2>{{#link-to "teams"}}Welcome to Hamsterball{{/link-to}}</h2>
-      <HR>
-        {{outlet}}
+      <hr>
+        {{outlet main}}
     </script>
 
     <script type="text/x-handlebars" id="teams">
@@ -28,16 +28,9 @@
       </div>
       <div class="col-md-3">
         {{outlet team}}
+        {{outlet newplayer}}
       </div>
-
     </script>
-
-    <script type="text/x-handlebars" id="team">
-      <h3>{{name}} Players:</h3>
-
-    </script>
-
-
 
     <script type="text/x-handlebars" id="newteam">
       <form>
@@ -45,8 +38,27 @@
         <input type="text" class="form-control" id="name" name="name"><br>
         <button type="submit" class="btn btn-success" {{action 'save'}}>Create Team</button>
       </form>
-
     </script>
+
+    <script type="text/x-handlebars" id="team">
+      <h3>{{name}} Players:</h3>
+      {{#each player in model.players}}
+        <p><p class="btn btn-info">{{player.name}}</p></p>
+      {{/each}}
+      <hr>
+      {{#link-to 'newplayer' class="btn btn-warning" }}Add Player{{/link-to}}
+      <br><br>
+    </script>
+
+    <script type="text/x-handlebars" id="newplayer">
+      <form>
+        <label for="name">Player Name</label>
+        <input type="text" class="form-control" id="name" name="name"><br>
+        <button type="submit" class="btn btn-success" {{action 'savePlayer'}}>Create Player</button>
+      </form>
+    </script>
+
+
 
     <script src="js/libs/jquery-1.10.2.js"></script>
     <script src="js/libs/handlebars-1.1.2.js"></script>
@@ -55,6 +67,7 @@
     <script src="js/localstorage_adapter.js"></script>
     <script src="js/hamsterball.js"></script>
     <script src="js/models/team.js"></script>
+    <script src="js/models/player.js"></script>
     <!-- to activate the test runner, add the "?test" query string parameter -->
     <script src="tests/runner.js"></script>
   </div>
