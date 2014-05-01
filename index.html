@@ -30,6 +30,10 @@
         {{outlet team}}
         {{outlet newplayer}}
       </div>
+      <div class="col-md-4 ">
+        {{outlet player}}
+        {{outlet newstat}}
+      </div>
     </script>
 
     <script type="text/x-handlebars" id="newteam">
@@ -42,8 +46,9 @@
 
     <script type="text/x-handlebars" id="team">
       <h3>{{name}} Players:</h3>
+      <br>
       {{#each player in model.players}}
-        <p><p class="btn btn-info">{{player.name}}</p></p>
+        <p>{{#link-to 'player' player class="btn btn-info"}}{{player.playername}}{{/link-to}}</p>
       {{/each}}
       <hr>
       {{#link-to 'newplayer' class="btn btn-warning" }}Add Player{{/link-to}}
@@ -58,6 +63,29 @@
       </form>
     </script>
 
+    <script type="text/x-handlebars" id="player">
+      <h3>{{playername}}:</h3>
+      <h4>Total Shots:{{stats.length}}</h4>
+      <hr>
+      {{#each stat in model.stats}}
+        {{#if stat.shot}}
+          <p><button class="btn btn-success">Made Shot</button></p>
+        {{else}}
+          <p><button class="btn btn-danger">Missed Shot</button></p>
+        {{/if}}
+      {{/each}}
+      <hr>
+      {{#link-to 'newstat' class="btn btn-warning" }}Add Shot{{/link-to}}
+      <br><br>
+
+    </script>
+
+    <script type="text/x-handlebars" id="newstat">
+      <form>
+        <button class="btn btn-success" id="made" {{action 'shotMade'}}>Shot Made</button>
+        <button class="btn btn-danger" id="missed" {{action 'shotMissed'}}>Shot Missed</button>
+      </form>
+    </script>
 
 
     <script src="js/libs/jquery-1.10.2.js"></script>
@@ -68,8 +96,7 @@
     <script src="js/hamsterball.js"></script>
     <script src="js/models/team.js"></script>
     <script src="js/models/player.js"></script>
-    <!-- to activate the test runner, add the "?test" query string parameter -->
-    <script src="tests/runner.js"></script>
+    <script src="js/models/stat.js"></script>
   </div>
 </body>
 </html>

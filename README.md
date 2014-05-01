@@ -1,36 +1,9 @@
-starter-kit
+Hamsterball
 ===========
 
-A starter kit for Ember
+Stats keepers at basketball games need to record data quickly and calculate statistics on the fly. This is an app to help them out.
 
-Your Ember.js project is almost ready! Here's how to get started:
+Start out by just creating an Ember app using the starter kit from the homepage. So that you don't have to create a Rails API app for saving and retrieving records, use the Ember Data Local Storage Adapter.
 
-- Start writing your app in js/app.js.
+Before the game starts, the stats keeper needs to enter the names of the teams who are playing, and the names of the players on the teams. To keep things simple, we'll make it so that this app can only be used for a single game at a time, at least to start (otherwise, we'd have to have a many-to-many relationship between teams and games). Hint: Read the Ember guides on relationships in models; a team has many players.
 
-- Describe your application HTML in index.html.
-
-- During development, you can link to js/libs/ember-*.js to get the
-  unminified version of Ember.js.
-
-- Add CSS to css/style.css
-
-- Open index.html in your browser
-
-Tests
-=====
-
-This starter kit comes with an integration test sample, written for QUnit runner. 
-
-You can run the tests by opening the `index.html?test` page in your browser.
-
-The test is located in the `tests/tests.js` file. You can see how such an 
-integration test should be written, using QUnit assertions and ember-testing helpers.
-
-For more information about ember-testing package see [ember-testing](http://emberjs.com/guides/testing/integration/)
-
-For more information about the QUnit testing framework, see [QUnit](http://qunitjs.com/)
-
-Contact
-====
-
-www.emberjs.com

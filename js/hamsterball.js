@@ -1,7 +1,6 @@
 Hamsterball = Ember.Application.create({
-  LOG_TRANSITIONS: true//,
-  // LOG_TRANSITIONS_INTERNAL: true
-});
+  LOG_TRANSITIONS: true
+ });
 
 Hamsterball.ApplicationSerializer = DS.LSSerializer.extend();
 Hamsterball.ApplicationAdapter = DS.LSAdapter.extend({
@@ -13,8 +12,11 @@ Hamsterball.ApplicationAdapter = DS.LSAdapter.extend({
 Hamsterball.Router.map(function() {
   this.resource('teams', { path: '/' }, function() {
     this.resource('newteam', { path: 'teams/new' });
-    this.resource('team', { path: '/team/:id' }, function() {
+    this.resource('team', { path: '/team/:id/:name' }, function() {
       this.resource('newplayer', { path: 'players/new' });
+      this.resource('player', { path: 'player/:player_id' }, function() {
+        this.resource('newstat', { path: 'stats/new' });
+      });
     });
   });
 });
@@ -43,24 +45,32 @@ Hamsterball.TeamRoute = Ember.Route.extend({
 
 Hamsterball.NewteamRoute = Ember.Route.extend({
   renderTemplate: function() {
-  console.log(this);
     this.render({ outlet: 'newteam' });
   }
 });
 
-Hamsterball.PlayersRoute = Ember.Route.extend({
+Hamsterball.PlayerRoute = Ember.Route.extend({
   renderTemplate: function() {
-    this.render({ outlet: 'players' });
+    this.render({ outlet: 'player' });
   },
-  model: function() {
-    var players = this.store.find('player');
-    return players;
+  model: function(params) {
+
+    var player = this.store.find('player', params.player_id);
+    return player;
+
   }
 });
 
 Hamsterball.NewplayerRoute = Ember.Route.extend({
   renderTemplate: function() {
     this.render({ outlet: 'newplayer' });
+
+  }
+});
+
+Hamsterball.NewstatRoute = Ember.Route.extend({
+  renderTemplate: function() {
+    this.render({ outlet: 'newstat' });
   }
 });
 
@@ -87,7 +97,7 @@ Hamsterball.NewplayerController = Ember.ObjectController.extend({
       var name = $('#name').val();
       var store = this.get('store');
       var player = store.createRecord('player',{
-          name : name
+          playername : name
       });
       player.save();
       var team = this.get('team').get('model');
@@ -98,6 +108,39 @@ Hamsterball.NewplayerController = Ember.ObjectController.extend({
     }
   }
 });
-// {"team":{"records":{"ssbls":{"id":"ssbls","name":"teletubbie"}}},
-// "player":{"records":{"0v72l":{"id":"0v72l","name":"Tinky Winky","team":"ssbls"}}}}
+
+Hamsterball.NewstatController = Ember.ObjectController.extend({
+  needs: "player",
+  player: Ember.computed.alias("controllers.player"),
+  actions :{
+    shotMade : function(){
+      var shot = true;
+      var store = this.get('store');
+      var stat = store.createRecord('stat',{
+          shot : shot
+      });
+
+      stat.save();
+      var player = this.get('player').get('model');
+      player.get('stats').pushObject(stat)
+      player.save();
+
+      this.transitionToRoute('newstat');
+    },
+    shotMissed : function(){
+      var shot = false;
+      var store = this.get('store');
+      var stat = store.createRecord('stat',{
+          shot : shot
+      });
+
+      stat.save();
+      var player = this.get('player').get('model');
+      player.get('stats').pushObject(stat)
+      player.save();
+
+      this.transitionToRoute('newstat');
+    }
+  }
+});
 
